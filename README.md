@@ -11,7 +11,7 @@ The **formal, authoritative specification** for Intent Contract Language (ICL) �
 | Component | Status |
 |-----------|--------|
 | Core Specification (BNF, types, semantics) | **Draft v1.0** |
-| Example Contracts | 4 reference examples |
+| Example Contracts | 5 reference examples |
 | Conformance Tests | In progress |
 | Formal Grammar File | Available |
 
@@ -48,6 +48,7 @@ ICL-Spec/
 │   ├── db-write-validation.icl  # Database write validation contract
 │   ├── api-rate-limiting.icl    # API rate limiting contract
 │   ├── agent-action-verification.icl  # AI agent action verification
+│   ├── hello-world.icl          # Minimal hello world contract
 │   └── code-verification.icl    # Code review verification
 ├── conformance/
 │   ├── valid/                   # Contracts that MUST parse successfully
@@ -75,8 +76,8 @@ ICL-Spec/
 
 | Repo | Purpose |
 |------|---------|
-| [ICL-Runtime](https://github.com/ICL-System/ICL-Runtime) | Canonical Rust implementation + CLI + language bindings |
-| [ICL-Docs](https://github.com/ICL-System/ICL-Docs) | Documentation website |
+| [ICL-Runtime](https://github.com/ICL-System/ICL-Runtime) | Canonical Rust implementation + CLI |
+| [ICL-Docs](https://github.com/ICL-System/ICL-Docs) | Documentation website (mdBook) |
 
 ---
 
