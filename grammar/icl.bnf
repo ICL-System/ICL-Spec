@@ -1,0 +1,203 @@
+(* ICL Formal Grammar — BNF Notation *)
+(* Source: CORE-SPECIFICATION.md Section 1 *)
+(* Version: 1.0.0 *)
+
+(* ============================== *)
+(* 1.1 Top-Level Structure        *)
+(* ============================== *)
+
+<ContractDefinition> ::=
+  <CoreContract>
+  (<Extensions>)?
+
+<CoreContract> ::=
+  "Contract" "{"
+    <Identity>
+    <PurposeStatement>
+    <DataSemantics>
+    <BehavioralSemantics>
+    <ExecutionConstraints>
+    <HumanMachineContract>
+  "}"
+
+<Extensions> ::=
+  "Extensions" "{"
+    (<SystemExtension>)*
+  "}"
+
+<SystemExtension> ::=
+  <SystemName> "{"
+    (<CustomField>)*
+  "}"
+
+<SystemName> ::= "Custom" | [a-z_][a-z0-9_-]*
+
+(* ============================== *)
+(* Primitive Tokens                *)
+(* ============================== *)
+
+<Identifier>     ::= [a-z_][a-z0-9_]*
+<StringLiteral>  ::= '"' (printable | escape_sequence)* '"'
+<IntegerLiteral> ::= [0-9]+
+<FloatLiteral>   ::= [0-9]+ '.' [0-9]+
+<ISO8601>        ::= YYYY-MM-DDTHH:MM:SSZ
+<UUIDv4>         ::= [0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}
+
+(* ============================== *)
+(* 1.2 Identity Section            *)
+(* ============================== *)
+
+<Identity> ::=
+  "Identity" "{"
+    "stable_id:" <StringLiteral> ","
+    "version:" <IntegerLiteral> ","
+    "created_timestamp:" <ISO8601> ","
+    "owner:" <StringLiteral> ","
+    "semantic_hash:" <StringLiteral>
+  "}"
+
+(* Constraints:
+   - stable_id matches: [a-z0-9][a-z0-9\-]{0,30}[a-z0-9]
+   - version is non-negative integer
+   - semantic_hash is SHA-256 hex digest
+   - owner is opaque string *)
+
+(* ============================== *)
+(* 1.3 Purpose Statement           *)
+(* ============================== *)
+
+<PurposeStatement> ::=
+  "PurposeStatement" "{"
+    "narrative:" <StringLiteral> ","
+    "intent_source:" <StringLiteral> ","
+    "confidence_level:" <FloatLiteral>
+  "}"
+
+(* Constraints:
+   - narrative < 500 chars
+   - confidence_level in [0.0, 1.0] *)
+
+(* ============================== *)
+(* 1.4 Data Semantics Section      *)
+(* ============================== *)
+
+<DataSemantics> ::=
+  "DataSemantics" "{"
+    "state:" <StateDefinition> ","
+    "invariants:" <InvariantList>
+  "}"
+
+<StateDefinition> ::=
+  "{" (<StateField>)* "}"
+
+<StateField> ::=
+  <Identifier> ":" <TypeExpression> ("=" <DefaultValue>)? ","
+
+<TypeExpression> ::=
+  <PrimitiveType> |
+  <CompositeType> |
+  <CollectionType>
+
+<PrimitiveType> ::=
+  "Integer" | "Float" | "String" | "Boolean" | "ISO8601" | "UUID"
+
+<CompositeType> ::=
+  "Object" "{" (<StateField>)* "}" |
+  "Enum" "[" <StringLiteral> ("," <StringLiteral>)* "]"
+
+<CollectionType> ::=
+  "Array" "<" <TypeExpression> ">" |
+  "Map" "<" <TypeExpression> "," <TypeExpression> ">"
+
+<InvariantList> ::=
+  "[" (<StringLiteral>)* "]"
+
+(* ============================== *)
+(* 1.5 Behavioral Semantics        *)
+(* ============================== *)
+
+<BehavioralSemantics> ::=
+  "BehavioralSemantics" "{"
+    "operations:" <OperationList>
+  "}"
+
+<OperationList> ::=
+  "[" (<Operation>)* "]"
+
+<Operation> ::=
+  "{"
+    "name:" <StringLiteral> ","
+    "precondition:" <StringLiteral> ","
+    "parameters:" <ParameterList> ","
+    "postcondition:" <StringLiteral> ","
+    "side_effects:" <SideEffectList> ","
+    "idempotence:" <StringLiteral>
+  "}"
+
+<ParameterList> ::=
+  "{" (<Parameter>)* "}"
+
+<Parameter> ::=
+  <Identifier> ":" <TypeExpression> ("=" <DefaultValue>)? ","
+
+<SideEffectList> ::=
+  "[" (<StringLiteral>)* "]"
+
+(* ============================== *)
+(* 1.6 Execution Constraints       *)
+(* ============================== *)
+
+<ExecutionConstraints> ::=
+  "ExecutionConstraints" "{"
+    "trigger_types:" <TriggerTypeList> ","
+    "resource_limits:" <ResourceLimits> ","
+    "external_permissions:" <PermissionList> ","
+    "sandbox_mode:" <StringLiteral>
+  "}"
+
+<TriggerTypeList> ::=
+  "[" (<StringLiteral>)* "]"
+
+<ResourceLimits> ::=
+  "{"
+    "max_memory_bytes:" <IntegerLiteral> ","
+    "computation_timeout_ms:" <IntegerLiteral> ","
+    "max_state_size_bytes:" <IntegerLiteral>
+  "}"
+
+<PermissionList> ::=
+  "[" (<StringLiteral>)* "]"
+
+(* ============================== *)
+(* 1.7 Human-Machine Contract      *)
+(* ============================== *)
+
+<HumanMachineContract> ::=
+  "HumanMachineContract" "{"
+    "system_commitments:" <CommitmentList> ","
+    "system_refusals:" <RefusalList> ","
+    "user_obligations:" <ObligationList>
+  "}"
+
+<CommitmentList> ::=
+  "[" (<StringLiteral>)* "]"
+
+<RefusalList> ::=
+  "[" (<StringLiteral>)* "]"
+
+<ObligationList> ::=
+  "[" (<StringLiteral>)* "]"
+
+(* ============================== *)
+(* 5. Extension Mechanism          *)
+(* ============================== *)
+
+<Extensions> ::=
+  "Extensions" "{"
+    (<SystemExtension>)*
+  "}"
+
+<SystemExtension> ::=
+  <SystemName> "{"
+    (<CustomField>)*
+  "}"
