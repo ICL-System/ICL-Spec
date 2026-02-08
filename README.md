@@ -12,8 +12,9 @@ The **formal, authoritative specification** for Intent Contract Language (ICL) �
 |-----------|--------|
 | Core Specification (BNF, types, semantics) | **Draft v1.0** |
 | Example Contracts | 5 reference examples |
-| Conformance Tests | In progress |
+| Conformance Tests | **Complete** — 57 valid, 55 invalid, 25 normalization pairs |
 | Formal Grammar File | Available |
+| Conformance Runner | Available (`run-conformance.sh`) |
 
 ---
 
@@ -95,4 +96,4 @@ If you're building an ICL implementation in any language:
 
 ## License
 
-MIT OR Apache-2.0
+MIT — See [LICENSE](LICENSE) for details.
