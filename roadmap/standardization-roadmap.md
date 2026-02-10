@@ -170,8 +170,8 @@ Extensions {
 
 ### Tier 2: Official Bindings
 
-- Python (ctypes FFI to Rust)
-- JavaScript (Node native binding to Rust)
+- Python (PyO3 + maturin)
+- JavaScript (wasm-bindgen + wasm-pack)
 - Go (cgo FFI to Rust)
 - Maintained by standards body or approved vendors
 

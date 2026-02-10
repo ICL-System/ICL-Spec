@@ -511,15 +511,13 @@ Normalization preserves all meaning:
 
 ---
 
-## Next Steps
+## Implementations
 
-This specification defines Core ICL. To implement:
+The canonical implementation of this specification is available in the following repositories:
 
-1. **Build Parser** — Tokenize and parse BNF grammar
-2. **Build Canonicalizer** — Implement normalization algorithm
-3. **Build Verifier** — Check invariants and determinism
-4. **Build Executor** — Execute operations deterministically
-5. **Build Bindings** — Wrap core in language-specific APIs
+| Repository | Purpose |
+|------------|----------|
+| [ICL-Runtime](https://github.com/ICL-System/ICL-Runtime) | Canonical Rust implementation (parser, normalizer, verifier, executor, CLI) |
+| [ICL-Docs](https://github.com/ICL-System/ICL-Docs) | Documentation website |
 
-See `/icl/runtime/` for canonical Rust implementation.
-See `/icl/bindings/` for language bindings.
+Language bindings (Python, JavaScript, Go) are available in `ICL-Runtime/bindings/` — all wrap the Rust core via FFI.
