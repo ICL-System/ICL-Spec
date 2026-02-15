@@ -1,5 +1,7 @@
 # ICL Specification
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 The **formal, authoritative specification** for Intent Contract Language (ICL) — a universal, deterministic, language-agnostic specification language for intent contracts.
 
 > Like OpenAPI for human intent and AI agent constraints.
